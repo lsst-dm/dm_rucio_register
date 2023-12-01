@@ -1,3 +1,4 @@
+#!/bin/bash
 from lsst.dm.replica impore Replica
 if __name__ == "__main__":
 
@@ -9,7 +10,6 @@ if __name__ == "__main__":
 
     rse = "XRD1"
     scope = "test"
+    name = f'srp/data/{data_file}'
 
-    x = Replica.replica(rse=rse, scope=scope, data_file=data_file, sidecar_file=sidecar_file, pfn=f"root://xrd1:1094//rucio/test/srp/data/{data_file}")
-    print(x)
-
+    x = Replica.replica_file(rse=rse, scope=scope, name=name, data_file=data_file, sidecar_file=sidecar_file, pfn=f"root://xrd1:1094//rucio/test/srp/data/{data_file}")

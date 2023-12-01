@@ -9,13 +9,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class Replica:
-    def replica_file(rse, scope, data_file, sidecar_file, pfn=None):
+    def replica_file(rse, scope, name, data_file, sidecar_file, pfn=None):
         with open(sidecar_file, 'r') as f:
             sidecar = f.readline()
     
         self.replica(rse, scope, data_file, sidecar, pfn=None):
 
-    def replica(rse, scope, data_file, sidecar, pfn=None):
+    def replica(rse, scope, name, data_file, sidecar, pfn=None):
         stats = os.stat(data_file)
         size = stats.st_size
         adler32 = utils.adler32(data_file)
@@ -23,6 +23,5 @@ class Replica:
         meta = {'rubin_butler': 1, 'rubin_sidecar': sidecar}
     
         rpc = ReplicaClient()
-        name = f'srp/data/{data_file}'
         x = rpc.add_replica(rse=rse, scope=scope, name=name, bytes_=size, adler32=adler32, meta=meta, pfn=pfn)
         return f"{scope}:{name}"
