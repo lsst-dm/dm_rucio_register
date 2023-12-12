@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+# This file is part of dm_replica
+#
+# Developed for the LSST Data Management System.
+# This product includes software developed by the LSST Project
+# (https://www.lsst.org).
+# See the COPYRIGHT file at the top-level directory of this distribution
+# for details of code ownership.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import argparse
+from lsst.dm.register import RegistrationClient
+
+
+parser = argparse.ArgumentParser(description="register butler files with Rucio")
+parser.add_argument( "-r", "--rse", type=str, dest="rse", required=True, help="RSE of file to register")
+parser.add_argument( "-s", "--scope", type=str, dest="scope", required=True, help="scope of file to register")
+parser.add_argument( "-n", "--name", type=str, dest="name", required=True, help="path name of file to register")
+parser.add_argument( "-f", "--file", type=str, dest="datafile", required=True, help="file to register")
+parser.add_argument( "-p", "--pfn", type=str, dest="pfn", required=True, help="full PFN of the file")
+
+mug = parser.add_mutually_exclusive_group(required=True)
+mug.add_argument( "-j", "--json", type=str, dest="metadata_json", help="json string to register as metadata")
+mug.add_argument( "-m", "--metadata", type=str, dest="metadata_file", help="file containing json metadata to register with file")
+
+
+args = parser.parse_args()
+
+reg = RegistrationClient()
+
+
+if args.json is None:
+    reg.register_file(rse=args.rse, scopre=args.scope, name=name, data_file=datafile, sidecar_file=metadata_file, pfn=pfn)
+else:
+    reg.register_json(rse=args.rse, scopre=args.scope, name=name, data_file=datafile, sidecar_json=metadata_json, pfn=pfn)
