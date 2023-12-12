@@ -43,6 +43,6 @@ reg = RegistrationClient()
 
 
 if args.json is None:
-    reg.register_file(rse=args.rse, scopre=args.scope, name=name, data_file=datafile, sidecar_file=metadata_file, pfn=pfn)
+    reg.register_file(rse=args.rse, scope=args.scope, name=name, data_file=datafile, sidecar_file=metadata_file, pfn=pfn)
 else:
-    reg.register_json(rse=args.rse, scopre=args.scope, name=name, data_file=datafile, sidecar_json=metadata_json, pfn=pfn)
+    reg.register_json(rse=args.rse, scope=args.scope, name=name, data_file=datafile, sidecar_json=metadata_json, pfn=pfn)

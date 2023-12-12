@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 import sys
+from lsst.daf.butler import Butler
 from rucio.client.replicaclient import ReplicaClient
 import rucio.common.utils as utils
 
@@ -9,16 +10,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class RegistrationClient(ReplicaClient):
-    def register_file(self, rse, scope, name, data_file, sidecar_file, pfn=None):
+    def register_file(self, rse, scope, name, data_file, sidecar_file, pfn):
         with open(sidecar_file, 'r') as f:
             sidecar = f.readlines()
 
         sidecar_json = ''.join(sidecar)
     
-        return self.replica_json(rse, scope, data_file, sidecar_json, pfn=None):
+        return self.replica_json(rse, scope, data_file, sidecar_json, pfn):
         
 
-    def register_json(self, rse, scope, name, data_file, sidecar, pfn=None):
+    def register_json(self, rse, scope, name, data_file, sidecar, pfn):
         stats = os.stat(data_file)
         size = stats.st_size
         adler32 = utils.adler32(data_file)
@@ -28,6 +29,10 @@ class RegistrationClient(ReplicaClient):
         rpc = ReplicaClient()
         self.add_replica(rse=rse, scope=scope, name=name, bytes_=size, adler32=adler32, meta=meta, pn=pfn)
         return True
+
+    def register_butler_file(self, repo, rse, scope, name, butler_file, pfn):
+        b = Butler(repo)
+        
 
 if __name__ == "__main__":
     rpc = RegistrationClient()
